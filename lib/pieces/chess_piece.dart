@@ -18,7 +18,7 @@ class Location {
 
 abstract class ChessPiece {
   ChessPiece(this.pieceColor, this.location);
-  final Location location;
+  Location location;
   final PlayerColor pieceColor;
   String get name;
   String get fileName =>
@@ -27,4 +27,9 @@ abstract class ChessPiece {
   int get x => location.x;
   int get y => location.y;
   List<Location> legalMoves(List<ChessPiece> others);
+  bool canMoveto(int x, int y, List<ChessPiece> others) =>
+      legalMoves(others).contains(Location(x, y));
+
+  @override
+  String toString() => "$name($x,$y)";
 }

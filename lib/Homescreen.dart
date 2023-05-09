@@ -51,14 +51,7 @@ class _HomescreenState extends State<Homescreen> {
             children: [
               ...List.generate(
                 8,
-                (x) => Container(
-                  decoration: BoxDecoration(
-                    color: buildTileColor(x, y),
-                  ),
-                  width: tileWidth,
-                  height: tileWidth,
-                  child: _buildChessPieces(x, y),
-                ),
+                (x) => buildDragTarget(x, y),
               ).reversed,
             ],
           ),
@@ -67,10 +60,50 @@ class _HomescreenState extends State<Homescreen> {
     );
   }
 
+  DragTarget<ChessPiece> buildDragTarget(int x, int y) {
+    return DragTarget<ChessPiece>(
+      onAccept: (piece) {
+        setState(() {
+          piece.location = Location(x, y);
+        });
+      },
+      onWillAccept: (piece) {
+        print(piece);
+        if (piece == null) {
+          return false;
+        }
+        final accept = piece.canMoveto(x, y, pieces);
+        print("$piece ${accept ? "can" : "cannot"} move to ($x, $y");
+        return accept;
+      },
+      builder: (context, candidateData, rejectedData) => Container(
+        decoration: BoxDecoration(
+          color: buildTileColor(x, y),
+        ),
+        width: tileWidth,
+        height: tileWidth,
+        child: _buildChessPieces(x, y),
+      ),
+    );
+  }
+
   Widget? _buildChessPieces(int x, int y) {
     final piece = coordinator.pieceOfTile(x, y);
     if (piece != null) {
-      return Image.asset(piece.fileName);
+      final child = Container(
+        alignment: Alignment.center,
+        child: Image.asset(
+          piece.fileName,
+          height: tileWidth * 1,
+          width: tileWidth * 1,
+        ),
+      );
+      return Draggable<ChessPiece>(
+        data: piece,
+        feedback: child,
+        child: child,
+        childWhenDragging: const SizedBox.shrink(),
+      );
     }
   }
 }
