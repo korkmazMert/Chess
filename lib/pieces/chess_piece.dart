@@ -11,7 +11,6 @@ class Location {
 
   @override
   bool operator ==(Object other) {
-    // TODO: implement ==
     return other is Location && (x == other.x && y == other.y);
   }
 }
