@@ -3,7 +3,8 @@ enum PlayerColor { black, white }
 class Location {
   final int x;
   final int y;
-  Location(this.x, this.y);
+  final PlayerColor locationColor;
+  Location(this.x, this.y, this.locationColor);
   bool get isValid => x <= 7 && y <= 7;
   @override
   // TODO: implement hashCode
@@ -29,10 +30,10 @@ abstract class ChessPiece {
   List<Location> captures(List<ChessPiece> others);
 
   bool canMoveto(int x, int y, List<ChessPiece> others) =>
-      moves(others).contains(Location(x, y));
+      moves(others).contains(Location(x, y, pieceColor));
 
   bool canCapture(int x, int y, List<ChessPiece> others) =>
-      captures(others).contains(Location(x, y));
+      captures(others).contains(Location(x, y, pieceColor));
 
   @override
   String toString() => "$name($x,$y)";

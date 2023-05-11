@@ -66,7 +66,7 @@ class _HomescreenState extends State<Homescreen> {
         final capturedPiece = coordinator.pieceOfTile(x, y);
 
         setState(() {
-          piece.location = Location(x, y);
+          piece.location = Location(x, y, piece.pieceColor);
           if (capturedPiece != null) {
             print("$capturedPiece captured!!");
             pieces.remove(capturedPiece);

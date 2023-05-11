@@ -48,7 +48,7 @@ class Rook extends ChessPiece {
           dx = 1 * i;
         }
 
-        final destination = Location(x + dx, y + dy);
+        final destination = Location(x + dx, y + dy, pieceColor);
 
         final pieceOnLocation =
             pieces.any((piece) => piece.location == destination);
@@ -82,7 +82,7 @@ class Rook extends ChessPiece {
         dx = 1 * i;
       }
 
-      final destination = Location(x + dx, y + dy);
+      final destination = Location(x + dx, y + dy, pieceColor);
 
       final pieceOnLocation =
           pieces.any((piece) => piece.location == destination);

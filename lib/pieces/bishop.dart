@@ -34,7 +34,7 @@ class Bishop extends ChessPiece {
         int dx = (isRight ? 1 : -1) * i;
         int dy = (isUp ? 1 : -1) * i;
 
-        final destination = Location(x + dx, y + dy);
+        final destination = Location(x + dx, y + dy, pieceColor);
 
         final pieceOnLocation =
             pieces.any((piece) => piece.location == destination);
@@ -56,7 +56,7 @@ class Bishop extends ChessPiece {
       int dx = (isRight ? 1 : -1) * i;
       int dy = (isUp ? 1 : -1) * i;
 
-      final destination = Location(x + dx, y + dy);
+      final destination = Location(x + dx, y + dy, pieceColor);
 
       final pieceOnLocation =
           pieces.any((piece) => piece.location == destination);

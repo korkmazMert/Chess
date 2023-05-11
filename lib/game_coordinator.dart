@@ -14,16 +14,16 @@ class GameCoordinator {
   factory GameCoordinator.newGame() {
     return GameCoordinator(
       [
-        Bishop(PlayerColor.white, Location(2, 7)),
-        Bishop(PlayerColor.white, Location(5, 7)),
-        Bishop(PlayerColor.black, Location(2, 0)),
-        Bishop(PlayerColor.black, Location(5, 0)),
-        Rook(PlayerColor.white, Location(7, 7)),
-        Rook(PlayerColor.white, Location(0, 7)),
-        Rook(PlayerColor.black, Location(0, 0)),
-        Rook(PlayerColor.black, Location(7, 0)),
-        Queen(PlayerColor.black, Location(4, 0)),
-        Queen(PlayerColor.white, Location(4, 7)),
+        Bishop(PlayerColor.white, Location(2, 7, PlayerColor.white)),
+        Bishop(PlayerColor.white, Location(5, 7, PlayerColor.white)),
+        Bishop(PlayerColor.black, Location(2, 0, PlayerColor.black)),
+        Bishop(PlayerColor.black, Location(5, 0, PlayerColor.black)),
+        Rook(PlayerColor.white, Location(7, 7, PlayerColor.white)),
+        Rook(PlayerColor.white, Location(0, 7, PlayerColor.white)),
+        Rook(PlayerColor.black, Location(0, 0, PlayerColor.black)),
+        Rook(PlayerColor.black, Location(7, 0, PlayerColor.black)),
+        Queen(PlayerColor.black, Location(4, 0, PlayerColor.black)),
+        Queen(PlayerColor.white, Location(4, 7, PlayerColor.white)),
       ],
     );
   }

@@ -44,7 +44,7 @@ class Queen extends ChessPiece {
         int dx = (isRight ? 1 : -1) * i;
         int dy = (isUp ? 1 : -1) * i;
 
-        final destination = Location(x + dx, y + dy);
+        final destination = Location(x + dx, y + dy, pieceColor);
 
         final pieceOnLocation =
             pieces.any((piece) => piece.location == destination);
@@ -79,7 +79,7 @@ class Queen extends ChessPiece {
           dx = 1 * i;
         }
 
-        final destination = Location(x + dx, y + dy);
+        final destination = Location(x + dx, y + dy, pieceColor);
 
         final pieceOnLocation =
             pieces.any((piece) => piece.location == destination);
@@ -101,7 +101,7 @@ class Queen extends ChessPiece {
       int dx = (isRight ? 1 : -1) * i;
       int dy = (isUp ? 1 : -1) * i;
 
-      final destination = Location(x + dx, y + dy);
+      final destination = Location(x + dx, y + dy, pieceColor);
 
       final pieceOnLocation =
           pieces.any((piece) => piece.location == destination);
@@ -133,10 +133,11 @@ class Queen extends ChessPiece {
         dx = 1 * i;
       }
 
-      final destination = Location(x + dx, y + dy);
+      final destination = Location(x + dx, y + dy, pieceColor);
 
-      final pieceOnLocation =
-          pieces.any((piece) => piece.location == destination);
+      final pieceOnLocation = pieces.any((piece) =>
+          piece.location == destination &&
+          destination.locationColor != piece.pieceColor);
       if (pieceOnLocation && location != destination) {
         hasFoundCapture = true;
         return destination;
