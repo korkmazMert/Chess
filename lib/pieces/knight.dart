@@ -1,32 +1,32 @@
 import 'package:chessgame1/pieces/chess_piece.dart';
 
-class Rook extends ChessPiece {
-  Rook(super.pieceColor, super.location);
+class Knight extends ChessPiece {
+  Knight(super.pieceColor, super.location);
 
   @override
-  String get name => "rook";
+  String get name => "knight";
 
   @override
   List<Location> moves(List<ChessPiece> others) {
     return <Location>{
-      ..._generateMoveOnStraight(true, true, others),
-      ..._generateMoveOnStraight(false, true, others),
-      ..._generateMoveOnStraight(true, false, others),
-      ..._generateMoveOnStraight(false, false, others),
+      ..._generateMoveOnL(true, true, others),
+      ..._generateMoveOnL(false, true, others),
+      ..._generateMoveOnL(true, false, others),
+      ..._generateMoveOnL(false, false, others),
     }.toList();
   }
 
   @override
   List<Location> captures(List<ChessPiece> others) {
     return <Location>{
-      ..._generateCapturesOnStraight(true, true, others),
-      ..._generateCapturesOnStraight(false, true, others),
-      ..._generateCapturesOnStraight(true, false, others),
-      ..._generateCapturesOnStraight(false, false, others),
+      ..._generateCapturesOnL(true, true, others),
+      ..._generateCapturesOnL(false, true, others),
+      ..._generateCapturesOnL(true, false, others),
+      ..._generateCapturesOnL(false, false, others),
     }.toList();
   }
 
-  List<Location> _generateMoveOnStraight(
+  List<Location> _generateMoveOnL(
       bool isUp, bool isRight, List<ChessPiece> pieces) {
     bool obstructed = false;
     return List<Location?>.generate(
@@ -61,7 +61,7 @@ class Rook extends ChessPiece {
     ).whereType<Location>().where((Location) => location.isValid).toList();
   }
 
-  List<Location> _generateCapturesOnStraight(
+  List<Location> _generateCapturesOnL(
       bool isUp, bool isRight, List<ChessPiece> pieces) {
     bool hasFoundCapture = false;
 

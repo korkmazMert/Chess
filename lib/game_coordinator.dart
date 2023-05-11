@@ -1,5 +1,6 @@
 import 'package:chessgame1/pieces/bishop.dart';
 import 'package:chessgame1/pieces/chess_piece.dart';
+import 'package:chessgame1/pieces/knight.dart';
 import 'package:chessgame1/pieces/queen.dart';
 import 'package:chessgame1/pieces/rook.dart';
 import 'package:collection/collection.dart';
@@ -24,6 +25,10 @@ class GameCoordinator {
         Rook(PlayerColor.black, Location(7, 0, PlayerColor.black)),
         Queen(PlayerColor.black, Location(4, 0, PlayerColor.black)),
         Queen(PlayerColor.white, Location(4, 7, PlayerColor.white)),
+        Knight(PlayerColor.white, Location(1, 7, PlayerColor.white)),
+        Knight(PlayerColor.white, Location(6, 7, PlayerColor.white)),
+        Knight(PlayerColor.black, Location(1, 0, PlayerColor.white)),
+        Knight(PlayerColor.black, Location(6, 0, PlayerColor.white)),
       ],
     );
   }

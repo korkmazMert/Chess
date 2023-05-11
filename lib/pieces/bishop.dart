@@ -58,8 +58,9 @@ class Bishop extends ChessPiece {
 
       final destination = Location(x + dx, y + dy, pieceColor);
 
-      final pieceOnLocation =
-          pieces.any((piece) => piece.location == destination);
+      final pieceOnLocation = pieces.any((piece) =>
+          piece.location == destination &&
+          destination.locationColor != piece.pieceColor);
       if (pieceOnLocation && location != destination) {
         hasFoundCapture = true;
         return destination;
