@@ -63,18 +63,24 @@ class _HomescreenState extends State<Homescreen> {
   DragTarget<ChessPiece> buildDragTarget(int x, int y) {
     return DragTarget<ChessPiece>(
       onAccept: (piece) {
+        final capturedPiece = coordinator.pieceOfTile(x, y);
+
         setState(() {
           piece.location = Location(x, y);
+          if (capturedPiece != null) {
+            print("$capturedPiece captured!!");
+            pieces.remove(capturedPiece);
+          }
         });
       },
       onWillAccept: (piece) {
-        print(piece);
         if (piece == null) {
           return false;
         }
-        final accept = piece.canMoveto(x, y, pieces);
-        print("$piece ${accept ? "can" : "cannot"} move to ($x, $y");
-        return accept;
+        final canMoveTo = piece.canMoveto(x, y, pieces);
+        final canCapture = piece.canCapture(x, y, pieces);
+
+        return canMoveTo || canCapture;
       },
       builder: (context, candidateData, rejectedData) => Container(
         decoration: BoxDecoration(
