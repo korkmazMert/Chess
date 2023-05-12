@@ -1,5 +1,6 @@
 import 'package:chessgame1/pieces/bishop.dart';
 import 'package:chessgame1/pieces/chess_piece.dart';
+import 'package:chessgame1/pieces/king.dart';
 import 'package:chessgame1/pieces/knight.dart';
 import 'package:chessgame1/pieces/queen.dart';
 import 'package:chessgame1/pieces/rook.dart';
@@ -29,6 +30,8 @@ class GameCoordinator {
         Knight(PlayerColor.white, Location(6, 7, PlayerColor.white)),
         Knight(PlayerColor.black, Location(1, 0, PlayerColor.white)),
         Knight(PlayerColor.black, Location(6, 0, PlayerColor.white)),
+        King(PlayerColor.black, Location(3, 0, PlayerColor.black)),
+        King(PlayerColor.white, Location(3, 7, PlayerColor.white))
       ],
     );
   }
