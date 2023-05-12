@@ -107,8 +107,8 @@ class _HomescreenState extends State<Homescreen> {
       return Draggable<ChessPiece>(
         data: piece,
         feedback: child,
-        child: child,
         childWhenDragging: const SizedBox.shrink(),
+        child: child,
       );
     }
   }
