@@ -72,6 +72,13 @@ class _HomescreenState extends State<Homescreen> {
             print("$capturedPiece captured!!");
             pieces.remove(capturedPiece);
           }
+          if (capturedPiece?.name == "king") {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Homescreen(),
+                ));
+          }
           if (currentTurn == PlayerColor.white) {
             currentTurn = PlayerColor.black;
           } else {
