@@ -15,12 +15,12 @@ class Bishop extends ChessPiece {
   }
 
   @override
-  List<Location> captures(List<ChessPiece> others) {
+  List<Location> captures(List<ChessPiece> others, currentTurn) {
     return <Location>{
-      ..._generateCapturesOnDiagonal(true, true, others),
-      ..._generateCapturesOnDiagonal(false, true, others),
-      ..._generateCapturesOnDiagonal(true, false, others),
-      ..._generateCapturesOnDiagonal(false, false, others),
+      ..._generateCapturesOnDiagonal(true, true, others, currentTurn),
+      ..._generateCapturesOnDiagonal(false, true, others, currentTurn),
+      ..._generateCapturesOnDiagonal(true, false, others, currentTurn),
+      ..._generateCapturesOnDiagonal(false, false, others, currentTurn),
     }.toList();
   }
 
@@ -51,14 +51,18 @@ class Bishop extends ChessPiece {
     ).whereType<Location>().where((Location) => location.isValid).toList();
   }
 
-  List<Location> _generateCapturesOnDiagonal(
-      bool isUp, bool isRight, List<ChessPiece> pieces) {
+  List<Location> _generateCapturesOnDiagonal(bool isUp, bool isRight,
+      List<ChessPiece> pieces, PlayerColor currentTurn) {
     bool hasFoundCapture = false;
 
     return List<Location?>.generate(8, (i) {
+      int dx = 0;
+      int dy = 0;
       if (hasFoundCapture) return null;
-      int dx = (isRight ? 1 : -1) * i;
-      int dy = (isUp ? 1 : -1) * i;
+      if (pieceColor == currentTurn) {
+        dx = (isRight ? 1 : -1) * i;
+        dy = (isUp ? 1 : -1) * i;
+      }
 
       final destination = Location(x + dx, y + dy, pieceColor);
 

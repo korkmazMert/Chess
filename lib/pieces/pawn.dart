@@ -15,10 +15,10 @@ class Pawn extends ChessPiece {
   }
 
   @override
-  List<Location> captures(List<ChessPiece> others) {
+  List<Location> captures(List<ChessPiece> others, currentTurn) {
     return <Location>{
-      ..._generateCapturesOnDiagonal(true, true, others),
-      ..._generateCapturesOnDiagonal(true, false, others),
+      ..._generateCapturesOnDiagonal(true, true, others, currentTurn),
+      ..._generateCapturesOnDiagonal(true, false, others, currentTurn),
     }.toList();
   }
 
@@ -70,29 +70,31 @@ class Pawn extends ChessPiece {
     ).whereType<Location>().where((Location) => location.isValid).toList();
   }
 
-  List<Location> _generateCapturesOnDiagonal(
-      bool isUp, bool isRight, List<ChessPiece> pieces) {
+  List<Location> _generateCapturesOnDiagonal(bool isUp, bool isRight,
+      List<ChessPiece> pieces, PlayerColor currentTurn) {
     bool hasFoundCapture = false;
 
     return List<Location?>.generate(8, (i) {
-      if (hasFoundCapture) return null;
       int dx = 0;
       int dy = 0;
-      if (isUp && isRight && pieceColor == PlayerColor.white) {
-        dy = -1;
-        dx = -1;
-      }
-      if (isUp && isRight != true && pieceColor == PlayerColor.white) {
-        dy = -1;
-        dx = 1;
-      }
-      if (isUp && isRight && pieceColor == PlayerColor.black) {
-        dy = 1;
-        dx = -1;
-      }
-      if (isUp && isRight != true && pieceColor == PlayerColor.black) {
-        dy = 1;
-        dx = 1;
+      if (hasFoundCapture) return null;
+      if (currentTurn == pieceColor) {
+        if (isUp && isRight && pieceColor == PlayerColor.white) {
+          dy = -1;
+          dx = -1;
+        }
+        if (isUp && isRight != true && pieceColor == PlayerColor.white) {
+          dy = -1;
+          dx = 1;
+        }
+        if (isUp && isRight && pieceColor == PlayerColor.black) {
+          dy = 1;
+          dx = -1;
+        }
+        if (isUp && isRight != true && pieceColor == PlayerColor.black) {
+          dy = 1;
+          dx = 1;
+        }
       }
 
       final destination = Location(x + dx, y + dy, pieceColor);

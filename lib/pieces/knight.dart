@@ -21,16 +21,16 @@ class Knight extends ChessPiece {
   }
 
   @override
-  List<Location> captures(List<ChessPiece> others) {
+  List<Location> captures(List<ChessPiece> others, currentTurn) {
     return <Location>{
-      ..._generateCapturesOnL(true, true, false, others),
-      ..._generateCapturesOnL(true, true, true, others),
-      ..._generateCapturesOnL(true, false, true, others),
-      ..._generateCapturesOnL(true, false, false, others),
-      ..._generateCapturesOnL(false, false, false, others),
-      ..._generateCapturesOnL(false, false, true, others),
-      ..._generateCapturesOnL(false, true, true, others),
-      ..._generateCapturesOnL(false, true, false, others),
+      ..._generateCapturesOnL(true, true, false, others, currentTurn),
+      ..._generateCapturesOnL(true, true, true, others, currentTurn),
+      ..._generateCapturesOnL(true, false, true, others, currentTurn),
+      ..._generateCapturesOnL(true, false, false, others, currentTurn),
+      ..._generateCapturesOnL(false, false, false, others, currentTurn),
+      ..._generateCapturesOnL(false, false, true, others, currentTurn),
+      ..._generateCapturesOnL(false, true, true, others, currentTurn),
+      ..._generateCapturesOnL(false, true, false, others, currentTurn),
     }.toList();
   }
 
@@ -102,56 +102,58 @@ class Knight extends ChessPiece {
     ).whereType<Location>().where((Location) => location.isValid).toList();
   }
 
-  List<Location> _generateCapturesOnL(
-      bool isUp, bool isRight, bool isDiagonal, List<ChessPiece> pieces) {
+  List<Location> _generateCapturesOnL(bool isUp, bool isRight, bool isDiagonal,
+      List<ChessPiece> pieces, PlayerColor currentTurn) {
     bool hasFoundCapture = false;
 
     return List<Location?>.generate(8, (i) {
-      if (hasFoundCapture) return null;
       int dx = 0;
       int dy = 0;
-      if (isUp && isRight && isDiagonal != true) {
-        //at sağa yatay L hareketi yapar
-        dy = -1;
-        dx = -2;
-      }
-      if (isUp && isRight && isDiagonal) {
-        // at sağa dikey L hareketi yapar
-        dx = -1;
-        dy = -2;
-      }
-      if (isUp && isRight != true && isDiagonal) {
-        //at sola dikey L hareketi yapar
-        dy = -2;
-        dx = 1;
-      }
-      if (isUp && isRight != true && isDiagonal != true) {
-        //at sola yatay L hareketi yapar
-        dy = -1;
-        dx = 2;
-      }
+      if (hasFoundCapture) return null;
+      if (currentTurn == pieceColor) {
+        if (isUp && isRight && isDiagonal != true) {
+          //at sağa yatay L hareketi yapar
+          dy = -1;
+          dx = -2;
+        }
+        if (isUp && isRight && isDiagonal) {
+          // at sağa dikey L hareketi yapar
+          dx = -1;
+          dy = -2;
+        }
+        if (isUp && isRight != true && isDiagonal) {
+          //at sola dikey L hareketi yapar
+          dy = -2;
+          dx = 1;
+        }
+        if (isUp && isRight != true && isDiagonal != true) {
+          //at sola yatay L hareketi yapar
+          dy = -1;
+          dx = 2;
+        }
 
-      // eksenenin alt kısmı
+        // eksenenin alt kısmı
 
-      if (isUp != true && isRight != true && isDiagonal != true) {
-        //at sola yatay L hareketi yapar
-        dy = 1;
-        dx = 2;
-      }
-      if (isUp != true && isRight != true && isDiagonal) {
-        //at sola dikey L hareketi yapar
-        dy = 2;
-        dx = 1;
-      }
-      if (isUp != true && isRight && isDiagonal) {
-        //at sağa dikey L hareketi yapar
-        dy = 2;
-        dx = -1;
-      }
-      if (isUp != true && isRight && isDiagonal != true) {
-        //at sağa yatay L hareketi yapar
-        dy = 1;
-        dx = -2;
+        if (isUp != true && isRight != true && isDiagonal != true) {
+          //at sola yatay L hareketi yapar
+          dy = 1;
+          dx = 2;
+        }
+        if (isUp != true && isRight != true && isDiagonal) {
+          //at sola dikey L hareketi yapar
+          dy = 2;
+          dx = 1;
+        }
+        if (isUp != true && isRight && isDiagonal) {
+          //at sağa dikey L hareketi yapar
+          dy = 2;
+          dx = -1;
+        }
+        if (isUp != true && isRight && isDiagonal != true) {
+          //at sağa yatay L hareketi yapar
+          dy = 1;
+          dx = -2;
+        }
       }
 
       final destination = Location(x + dx, y + dy, pieceColor);

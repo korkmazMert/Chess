@@ -27,14 +27,15 @@ abstract class ChessPiece {
   int get x => location.x;
   int get y => location.y;
   List<Location> moves(List<ChessPiece> others, PlayerColor currentTurn);
-  List<Location> captures(List<ChessPiece> others);
+  List<Location> captures(List<ChessPiece> others, PlayerColor currentTurn);
 
   bool canMoveto(
           int x, int y, List<ChessPiece> others, PlayerColor currentTurn) =>
       moves(others, currentTurn).contains(Location(x, y, pieceColor));
 
-  bool canCapture(int x, int y, List<ChessPiece> others) =>
-      captures(others).contains(Location(x, y, pieceColor));
+  bool canCapture(
+          int x, int y, List<ChessPiece> others, PlayerColor currentTurn) =>
+      captures(others, currentTurn).contains(Location(x, y, pieceColor));
 
   @override
   String toString() => "$name($x,$y)";

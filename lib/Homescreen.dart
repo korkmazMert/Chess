@@ -84,7 +84,7 @@ class _HomescreenState extends State<Homescreen> {
           return false;
         }
         final canMoveTo = piece.canMoveto(x, y, pieces, currentTurn);
-        final canCapture = piece.canCapture(x, y, pieces);
+        final canCapture = piece.canCapture(x, y, pieces, currentTurn);
 
         return canMoveTo || canCapture;
       },

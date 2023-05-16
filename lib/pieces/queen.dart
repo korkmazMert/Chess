@@ -21,16 +21,16 @@ class Queen extends ChessPiece {
   }
 
   @override
-  List<Location> captures(List<ChessPiece> others) {
+  List<Location> captures(List<ChessPiece> others, currentTurn) {
     return <Location>{
-      ..._generateCapturesOnDiagonal(true, true, others),
-      ..._generateCapturesOnDiagonal(false, true, others),
-      ..._generateCapturesOnDiagonal(true, false, others),
-      ..._generateCapturesOnDiagonal(false, false, others),
-      ..._generateCapturesOnStraight(true, true, others),
-      ..._generateCapturesOnStraight(false, true, others),
-      ..._generateCapturesOnStraight(true, false, others),
-      ..._generateCapturesOnStraight(false, false, others),
+      ..._generateCapturesOnDiagonal(true, true, others, currentTurn),
+      ..._generateCapturesOnDiagonal(false, true, others, currentTurn),
+      ..._generateCapturesOnDiagonal(true, false, others, currentTurn),
+      ..._generateCapturesOnDiagonal(false, false, others, currentTurn),
+      ..._generateCapturesOnStraight(true, true, others, currentTurn),
+      ..._generateCapturesOnStraight(false, true, others, currentTurn),
+      ..._generateCapturesOnStraight(true, false, others, currentTurn),
+      ..._generateCapturesOnStraight(false, false, others, currentTurn),
     }.toList();
   }
 
@@ -98,14 +98,18 @@ class Queen extends ChessPiece {
     ).whereType<Location>().where((Location) => location.isValid).toList();
   }
 
-  List<Location> _generateCapturesOnDiagonal(
-      bool isUp, bool isRight, List<ChessPiece> pieces) {
+  List<Location> _generateCapturesOnDiagonal(bool isUp, bool isRight,
+      List<ChessPiece> pieces, PlayerColor currentTurn) {
     bool hasFoundCapture = false;
 
     return List<Location?>.generate(8, (i) {
+      int dx = 0;
+      int dy = 0;
       if (hasFoundCapture) return null;
-      int dx = (isRight ? 1 : -1) * i;
-      int dy = (isUp ? 1 : -1) * i;
+      if (currentTurn == pieceColor) {
+        dx = (isRight ? 1 : -1) * i;
+        dy = (isUp ? 1 : -1) * i;
+      }
 
       final destination = Location(x + dx, y + dy, pieceColor);
 
@@ -119,25 +123,27 @@ class Queen extends ChessPiece {
     }).whereType<Location>().where((Location) => location.isValid).toList();
   }
 
-  List<Location> _generateCapturesOnStraight(
-      bool isUp, bool isRight, List<ChessPiece> pieces) {
+  List<Location> _generateCapturesOnStraight(bool isUp, bool isRight,
+      List<ChessPiece> pieces, PlayerColor currentTurn) {
     bool hasFoundCapture = false;
 
     return List<Location?>.generate(8, (i) {
-      if (hasFoundCapture) return null;
       int dx = 0;
       int dy = 0;
-      if (isUp && isRight) {
-        dy = 1 * i;
-      }
-      if (isUp && isRight == false) {
-        dx = -1 * i;
-      }
-      if (isUp == false && isRight == false) {
-        dy = -1 * i;
-      }
-      if (isUp == false && isRight) {
-        dx = 1 * i;
+      if (hasFoundCapture) return null;
+      if (currentTurn == pieceColor) {
+        if (isUp && isRight) {
+          dy = 1 * i;
+        }
+        if (isUp && isRight == false) {
+          dx = -1 * i;
+        }
+        if (isUp == false && isRight == false) {
+          dy = -1 * i;
+        }
+        if (isUp == false && isRight) {
+          dx = 1 * i;
+        }
       }
 
       final destination = Location(x + dx, y + dy, pieceColor);
