@@ -1,8 +1,11 @@
+import 'package:chessgame1/LevelUpPage.dart';
 import 'package:chessgame1/game_coordinator.dart';
+import 'package:chessgame1/pieces/bishop.dart';
 import 'package:chessgame1/pieces/chess_piece.dart';
+import 'package:chessgame1/pieces/knight.dart';
+import 'package:chessgame1/pieces/queen.dart';
+import 'package:chessgame1/pieces/rook.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -18,6 +21,7 @@ class _HomescreenState extends State<Homescreen> {
   final GameCoordinator coordinator = GameCoordinator.newGame();
   List<ChessPiece> get pieces => coordinator.pieces;
   PlayerColor currentTurn = PlayerColor.white;
+  String levelUpPieceName = "Rook";
 
   @override
   Widget build(BuildContext context) {
@@ -63,28 +67,48 @@ class _HomescreenState extends State<Homescreen> {
 
   DragTarget<ChessPiece> buildDragTarget(int x, int y) {
     return DragTarget<ChessPiece>(
-      onAccept: (piece) {
+      onAccept: (piece) async {
         final capturedPiece = coordinator.pieceOfTile(x, y);
+        piece.location = Location(x, y, piece.pieceColor);
+        if (capturedPiece != null) {
+          if (piece.name == "pawn" &&
+              capturedPiece.location.y == 0 &&
+              piece.pieceColor == PlayerColor.white) {
+            pieces.remove(capturedPiece);
+            pieces.remove(piece);
+            // pieces.add(Queen(piece.pieceColor, piece.location));
 
-        setState(() {
-          piece.location = Location(x, y, piece.pieceColor);
-          if (capturedPiece != null) {
+            await popUpSelection(piece);
+          }
+          if (piece.name == "pawn" &&
+              capturedPiece.location.y == 7 &&
+              piece.pieceColor == PlayerColor.black) {
+            pieces.remove(
+                capturedPiece); // piyon oraya ilerlemeden capture işlemi yapılacak
+            pieces.remove(
+                piece); // piyonun farklı bir taş olabilmesi için önce silip aynı konuma yeni taş eklenecek
+            // pieces.add(Queen(piece.pieceColor, piece.location)); // oyuna yeni taş ekleme kodu
+
+            await popUpSelection(
+                piece); // yeni sayfaya gidip seçim yapıp veriyi geri gönderen method
+          } else {
             print("$capturedPiece captured!!");
             pieces.remove(capturedPiece);
           }
-          if (capturedPiece?.name == "king") {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Homescreen(),
-                ));
-          }
-          if (currentTurn == PlayerColor.white) {
-            currentTurn = PlayerColor.black;
-          } else {
-            currentTurn = PlayerColor.white;
-          }
-        });
+        }
+
+        setState(
+          () {
+            if (capturedPiece?.name == "king") {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Homescreen(),
+                  ));
+            }
+            currentTurnChanger();
+          },
+        );
       },
       onWillAccept: (piece) {
         if (piece == null) {
@@ -104,6 +128,31 @@ class _HomescreenState extends State<Homescreen> {
         child: _buildChessPieces(x, y),
       ),
     );
+  }
+
+  Future<void> popUpSelection(ChessPiece piece) async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LevelUpPage(),
+        ));
+    if (result == "Queen") {
+      pieces.add(Queen(piece.pieceColor, piece.location));
+    } else if (result == "Rook") {
+      pieces.add(Rook(piece.pieceColor, piece.location));
+    } else if (result == "Bishop") {
+      pieces.add(Bishop(piece.pieceColor, piece.location));
+    } else if (result == "Knight") {
+      pieces.add(Knight(piece.pieceColor, piece.location));
+    }
+  }
+
+  void currentTurnChanger() {
+    if (currentTurn == PlayerColor.white) {
+      currentTurn = PlayerColor.black;
+    } else {
+      currentTurn = PlayerColor.white;
+    }
   }
 
   Widget? _buildChessPieces(int x, int y) {

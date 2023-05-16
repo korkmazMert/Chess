@@ -77,6 +77,7 @@ class Pawn extends ChessPiece {
     return List<Location?>.generate(8, (i) {
       int dx = 0;
       int dy = 0;
+
       if (hasFoundCapture) return null;
       if (currentTurn == pieceColor) {
         if (isUp && isRight && pieceColor == PlayerColor.white) {
