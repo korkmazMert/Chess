@@ -5,12 +5,12 @@ class Bishop extends ChessPiece {
   @override
   String get name => "bishop";
   @override
-  List<Location> moves(List<ChessPiece> others) {
+  List<Location> moves(List<ChessPiece> others, currentTurn) {
     return <Location>{
-      ..._generateMoveOnDiagonal(true, true, others),
-      ..._generateMoveOnDiagonal(false, true, others),
-      ..._generateMoveOnDiagonal(true, false, others),
-      ..._generateMoveOnDiagonal(false, false, others),
+      ..._generateMoveOnDiagonal(true, true, others, currentTurn),
+      ..._generateMoveOnDiagonal(false, true, others, currentTurn),
+      ..._generateMoveOnDiagonal(true, false, others, currentTurn),
+      ..._generateMoveOnDiagonal(false, false, others, currentTurn),
     }.toList();
   }
 
@@ -24,15 +24,19 @@ class Bishop extends ChessPiece {
     }.toList();
   }
 
-  List<Location> _generateMoveOnDiagonal(
-      bool isUp, bool isRight, List<ChessPiece> pieces) {
+  List<Location> _generateMoveOnDiagonal(bool isUp, bool isRight,
+      List<ChessPiece> pieces, PlayerColor currentTurn) {
     bool obstructed = false;
     return List<Location?>.generate(
       8,
       (i) {
+        int dx = 0;
+        int dy = 0;
         if (obstructed) return null;
-        int dx = (isRight ? 1 : -1) * i;
-        int dy = (isUp ? 1 : -1) * i;
+        if (pieceColor == currentTurn) {
+          dx = (isRight ? 1 : -1) * i;
+          dy = (isUp ? 1 : -1) * i;
+        }
 
         final destination = Location(x + dx, y + dy, pieceColor);
 

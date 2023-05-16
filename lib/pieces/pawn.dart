@@ -7,10 +7,10 @@ class Pawn extends ChessPiece {
   String get name => "pawn";
 
   @override
-  List<Location> moves(List<ChessPiece> others) {
+  List<Location> moves(List<ChessPiece> others, currentTurn) {
     return <Location>{
-      ..._generateMoveOnStraight(true, true, others),
-      ..._generateMoveOnStraight(true, false, others),
+      ..._generateMoveOnStraight(true, true, others, currentTurn),
+      ..._generateMoveOnStraight(true, false, others, currentTurn),
     }.toList();
   }
 
@@ -22,8 +22,8 @@ class Pawn extends ChessPiece {
     }.toList();
   }
 
-  List<Location> _generateMoveOnStraight(
-      bool isUp, bool isFirstMove, List<ChessPiece> pieces) {
+  List<Location> _generateMoveOnStraight(bool isUp, bool isFirstMove,
+      List<ChessPiece> pieces, PlayerColor currentTurn) {
     bool obstructed = false;
     int whitePawnInitialLoc = 6;
     int blackPawnInitialLoc = 1;
@@ -31,29 +31,30 @@ class Pawn extends ChessPiece {
       8,
       (i) {
         if (obstructed) return null;
-
         int dy = 0;
-        // beyaz piyonun ilk hareketiyse 2 birim gidebilir
-        if (isUp &&
-            pieceColor == PlayerColor.white &&
-            location.y == whitePawnInitialLoc &&
-            isFirstMove) {
-          dy = -2;
-        }
-        //siyah piyonun ilk hareketi ise 2 birim gidebilir
-        if (isUp &&
-            pieceColor == PlayerColor.black &&
-            location.y == blackPawnInitialLoc &&
-            isFirstMove) {
-          dy = 2;
-        }
-        // beyaz için 1 birim ileri
-        if (isUp && pieceColor == PlayerColor.white && isFirstMove != true) {
-          dy = -1;
-        }
-        // siyah için 1 birim ileri
-        if (isUp && pieceColor == PlayerColor.black && isFirstMove != true) {
-          dy = 1;
+        if (currentTurn == pieceColor) {
+          // beyaz piyonun ilk hareketiyse 2 birim gidebilir
+          if (isUp &&
+              pieceColor == PlayerColor.white &&
+              location.y == whitePawnInitialLoc &&
+              isFirstMove) {
+            dy = -2;
+          }
+          //siyah piyonun ilk hareketi ise 2 birim gidebilir
+          if (isUp &&
+              pieceColor == PlayerColor.black &&
+              location.y == blackPawnInitialLoc &&
+              isFirstMove) {
+            dy = 2;
+          }
+          // beyaz için 1 birim ileri
+          if (isUp && pieceColor == PlayerColor.white && isFirstMove != true) {
+            dy = -1;
+          }
+          // siyah için 1 birim ileri
+          if (isUp && pieceColor == PlayerColor.black && isFirstMove != true) {
+            dy = 1;
+          }
         }
 
         final destination = Location(x, y + dy, pieceColor);

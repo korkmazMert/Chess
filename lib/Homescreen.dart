@@ -17,6 +17,7 @@ class _HomescreenState extends State<Homescreen> {
   final Color lightGreen = const Color.fromRGBO(235, 236, 208, 100);
   final GameCoordinator coordinator = GameCoordinator.newGame();
   List<ChessPiece> get pieces => coordinator.pieces;
+  PlayerColor currentTurn = PlayerColor.white;
 
   @override
   Widget build(BuildContext context) {
@@ -71,13 +72,18 @@ class _HomescreenState extends State<Homescreen> {
             print("$capturedPiece captured!!");
             pieces.remove(capturedPiece);
           }
+          if (currentTurn == PlayerColor.white) {
+            currentTurn = PlayerColor.black;
+          } else {
+            currentTurn = PlayerColor.white;
+          }
         });
       },
       onWillAccept: (piece) {
         if (piece == null) {
           return false;
         }
-        final canMoveTo = piece.canMoveto(x, y, pieces);
+        final canMoveTo = piece.canMoveto(x, y, pieces, currentTurn);
         final canCapture = piece.canCapture(x, y, pieces);
 
         return canMoveTo || canCapture;

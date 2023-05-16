@@ -26,11 +26,12 @@ abstract class ChessPiece {
 
   int get x => location.x;
   int get y => location.y;
-  List<Location> moves(List<ChessPiece> others);
+  List<Location> moves(List<ChessPiece> others, PlayerColor currentTurn);
   List<Location> captures(List<ChessPiece> others);
 
-  bool canMoveto(int x, int y, List<ChessPiece> others) =>
-      moves(others).contains(Location(x, y, pieceColor));
+  bool canMoveto(
+          int x, int y, List<ChessPiece> others, PlayerColor currentTurn) =>
+      moves(others, currentTurn).contains(Location(x, y, pieceColor));
 
   bool canCapture(int x, int y, List<ChessPiece> others) =>
       captures(others).contains(Location(x, y, pieceColor));

@@ -7,16 +7,16 @@ class King extends ChessPiece {
   String get name => "king";
 
   @override
-  List<Location> moves(List<ChessPiece> others) {
+  List<Location> moves(List<ChessPiece> others, currentTurn) {
     return <Location>{
-      ..._generateMoveOnDiagonal(true, true, others),
-      ..._generateMoveOnDiagonal(false, true, others),
-      ..._generateMoveOnDiagonal(true, false, others),
-      ..._generateMoveOnDiagonal(false, false, others),
-      ..._generateMoveOnStraight(true, true, others),
-      ..._generateMoveOnStraight(false, true, others),
-      ..._generateMoveOnStraight(true, false, others),
-      ..._generateMoveOnStraight(false, false, others),
+      ..._generateMoveOnDiagonal(true, true, others, currentTurn),
+      ..._generateMoveOnDiagonal(false, true, others, currentTurn),
+      ..._generateMoveOnDiagonal(true, false, others, currentTurn),
+      ..._generateMoveOnDiagonal(false, false, others, currentTurn),
+      ..._generateMoveOnStraight(true, true, others, currentTurn),
+      ..._generateMoveOnStraight(false, true, others, currentTurn),
+      ..._generateMoveOnStraight(true, false, others, currentTurn),
+      ..._generateMoveOnStraight(false, false, others, currentTurn),
     }.toList();
   }
 
@@ -34,15 +34,19 @@ class King extends ChessPiece {
     }.toList();
   }
 
-  List<Location> _generateMoveOnDiagonal(
-      bool isUp, bool isRight, List<ChessPiece> pieces) {
+  List<Location> _generateMoveOnDiagonal(bool isUp, bool isRight,
+      List<ChessPiece> pieces, PlayerColor currentTurn) {
     bool obstructed = false;
     return List<Location?>.generate(
       8,
       (i) {
+        int dx = 0;
+        int dy = 0;
         if (obstructed) return null;
-        int dx = (isRight ? 1 : -1);
-        int dy = (isUp ? 1 : -1);
+        if (currentTurn == pieceColor) {
+          dx = (isRight ? 1 : -1);
+          dy = (isUp ? 1 : -1);
+        }
 
         final destination = Location(x + dx, y + dy, pieceColor);
 
@@ -57,26 +61,28 @@ class King extends ChessPiece {
     ).whereType<Location>().where((Location) => location.isValid).toList();
   }
 
-  List<Location> _generateMoveOnStraight(
-      bool isUp, bool isRight, List<ChessPiece> pieces) {
+  List<Location> _generateMoveOnStraight(bool isUp, bool isRight,
+      List<ChessPiece> pieces, PlayerColor currentTurn) {
     bool obstructed = false;
     return List<Location?>.generate(
       8,
       (i) {
-        if (obstructed) return null;
         int dx = 0;
         int dy = 0;
-        if (isUp && isRight) {
-          dy = 1;
-        }
-        if (isUp && isRight == false) {
-          dx = -1;
-        }
-        if (isUp == false && isRight == false) {
-          dy = -1;
-        }
-        if (isUp == false && isRight) {
-          dx = 1;
+        if (obstructed) return null;
+        if (currentTurn == pieceColor) {
+          if (isUp && isRight) {
+            dy = 1;
+          }
+          if (isUp && isRight == false) {
+            dx = -1;
+          }
+          if (isUp == false && isRight == false) {
+            dy = -1;
+          }
+          if (isUp == false && isRight) {
+            dx = 1;
+          }
         }
 
         final destination = Location(x + dx, y + dy, pieceColor);
