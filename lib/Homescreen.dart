@@ -5,6 +5,7 @@ import 'package:chessgame1/pieces/chess_piece.dart';
 import 'package:chessgame1/pieces/knight.dart';
 import 'package:chessgame1/pieces/queen.dart';
 import 'package:chessgame1/pieces/rook.dart';
+import 'package:chessgame1/services/serviceOperators.dart';
 import 'package:flutter/material.dart';
 
 class Homescreen extends StatefulWidget {
@@ -20,6 +21,8 @@ class _HomescreenState extends State<Homescreen> {
   final Color lightGreen = const Color.fromRGBO(235, 236, 208, 100);
   final GameCoordinator coordinator = GameCoordinator.newGame();
   List<ChessPiece> get pieces => coordinator.pieces;
+  late List<ChessPiece> data;
+
   PlayerColor currentTurn = PlayerColor.white;
   String levelUpPieceName = "Rook";
 
@@ -68,6 +71,15 @@ class _HomescreenState extends State<Homescreen> {
   DragTarget<ChessPiece> buildDragTarget(int x, int y) {
     return DragTarget<ChessPiece>(
       onAccept: (piece) async {
+        data = pieces;
+        denemeSaveTahta().saveTahta(data: data);
+        dynamic gelenveri = denemeGetTahta().getTahta(userId: 1);
+        print("gelenveri:");
+        print(gelenveri);
+        //print(pieces);
+        // print(loc.locationColor);
+        // print(loc.x);
+        // print(loc.y);
         final capturedPiece = coordinator.pieceOfTile(x, y);
         piece.location = Location(x, y, piece.pieceColor);
         if (capturedPiece != null) {
@@ -77,7 +89,6 @@ class _HomescreenState extends State<Homescreen> {
             pieces.remove(capturedPiece);
             pieces.remove(piece);
             // pieces.add(Queen(piece.pieceColor, piece.location));
-
             await popUpSelection(piece);
           }
           if (piece.name == "pawn" &&
@@ -92,7 +103,7 @@ class _HomescreenState extends State<Homescreen> {
             await popUpSelection(
                 piece); // yeni sayfaya gidip seçim yapıp veriyi geri gönderen method
           } else {
-            print("$capturedPiece captured!!");
+            //print("$capturedPiece captured!!");
             pieces.remove(capturedPiece);
           }
         }
@@ -116,6 +127,8 @@ class _HomescreenState extends State<Homescreen> {
         }
         final canMoveTo = piece.canMoveto(x, y, pieces, currentTurn);
         final canCapture = piece.canCapture(x, y, pieces, currentTurn);
+        // print(piece.moves(pieces, currentTurn));
+        // print(piece.captures(pieces, currentTurn));
 
         return canMoveTo || canCapture;
       },
@@ -153,6 +166,9 @@ class _HomescreenState extends State<Homescreen> {
     } else {
       currentTurn = PlayerColor.white;
     }
+    // print(coordinator.currentTurn);
+    // print(pieces);
+    //hamle yapılıp sıra karşıya geçtikten sonra veriler gönderilip tekrar çekilebilir.
   }
 
   Widget? _buildChessPieces(int x, int y) {

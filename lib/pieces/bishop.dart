@@ -34,6 +34,7 @@ class Bishop extends ChessPiece {
         int dy = 0;
         if (obstructed) return null;
         if (pieceColor == currentTurn) {
+          // sıra hamle yapılmak istenen taşta mı diye bakılır.
           dx = (isRight ? 1 : -1) * i;
           dy = (isUp ? 1 : -1) * i;
         }
@@ -43,6 +44,7 @@ class Bishop extends ChessPiece {
         final pieceOnLocation =
             pieces.any((piece) => piece.location == destination);
         if (pieceOnLocation && location != destination) {
+          // gidilmek istenen yerde taş olup olmadığına bakılır.
           obstructed = true;
           return null;
         }
@@ -73,6 +75,7 @@ class Bishop extends ChessPiece {
         hasFoundCapture = true;
         return destination;
       }
+      return null;
     }).whereType<Location>().where((Location) => location.isValid).toList();
   }
 }

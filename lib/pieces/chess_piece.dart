@@ -14,6 +14,8 @@ class Location {
   bool operator ==(Object other) {
     return other is Location && (x == other.x && y == other.y);
   }
+
+  toJson() {}
 }
 
 abstract class ChessPiece {

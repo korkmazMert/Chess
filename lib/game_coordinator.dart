@@ -6,10 +6,9 @@ import 'package:chessgame1/pieces/pawn.dart';
 import 'package:chessgame1/pieces/queen.dart';
 import 'package:chessgame1/pieces/rook.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
 
 class GameCoordinator {
-  late final List<ChessPiece> pieces;
+  List<ChessPiece> pieces;
   PlayerColor currentTurn = PlayerColor.white;
   GameCoordinator(this.pieces);
   ChessPiece? pieceOfTile(int x, int y) =>

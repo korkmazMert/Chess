@@ -120,6 +120,7 @@ class Queen extends ChessPiece {
         hasFoundCapture = true;
         return destination;
       }
+      return null;
     }).whereType<Location>().where((Location) => location.isValid).toList();
   }
 
@@ -155,6 +156,7 @@ class Queen extends ChessPiece {
         hasFoundCapture = true;
         return destination;
       }
+      return null;
     }).whereType<Location>().where((Location) => location.isValid).toList();
   }
 }

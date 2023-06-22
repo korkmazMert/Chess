@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class LevelUpPage extends StatefulWidget {
   const LevelUpPage({super.key});

@@ -95,6 +95,7 @@ class Rook extends ChessPiece {
         hasFoundCapture = true;
         return destination;
       }
+      return null;
     }).whereType<Location>().where((Location) => location.isValid).toList();
   }
 }
