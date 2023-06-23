@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:chessgame1/pieces/chess_piece.dart';
 import 'package:chessgame1/services/denemeModelBase.dart';
 import 'package:dio/dio.dart';
 
@@ -10,20 +11,24 @@ String baseUrl = "";
 class denemeGetTahta {
   denemeModelBase? denemeBase;
   List<denemeModel>? denemelist;
-  Future getTahta({required userId}) async {
-    var body = json.encode({"userId": "$userId"});
-    final response =
-        await Dio().post("http://192.168.202.43:8085/jobs/getJobs", data: body);
+  late List<ChessPiece> cesList;
+  Future<List<ChessPiece>> getTahta({required userId}) async {
+    var body = json.encode({"playerID": "$userId"});
+    final response = await Dio()
+        .get("http://192.168.56.1:8080/deneme/denemeGet", data: body);
     denemeBase = denemeModelBase?.FromJson(response.data);
     denemelist = denemeBase?.board;
+    cesList = denemelist![0].data;
+    return cesList;
   }
 }
 
 class denemeSaveTahta {
-  Future saveTahta({required data}) async {
-    var body = json.encode({"data": "$data"});
-    final response =
-        await Dio().post("http://192.168.202.43:8085/jobs/editJob", data: body);
+  Future saveTahta({required playerID, required data}) async {
+    var body = json.encode({"playerID": "$playerID", "data": data()});
+
+    final response = await Dio()
+        .post("http://192.168.56.1:8080/deneme/saveTahta", data: body);
     print("dönen veri:");
     print(response.data);
     return response.data;

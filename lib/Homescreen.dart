@@ -5,6 +5,7 @@ import 'package:chessgame1/pieces/chess_piece.dart';
 import 'package:chessgame1/pieces/knight.dart';
 import 'package:chessgame1/pieces/queen.dart';
 import 'package:chessgame1/pieces/rook.dart';
+import 'package:chessgame1/services/denemeModel.dart';
 import 'package:chessgame1/services/serviceOperators.dart';
 import 'package:flutter/material.dart';
 
@@ -20,8 +21,8 @@ class _HomescreenState extends State<Homescreen> {
   final Color green = const Color.fromRGBO(119, 149, 86, 100);
   final Color lightGreen = const Color.fromRGBO(235, 236, 208, 100);
   final GameCoordinator coordinator = GameCoordinator.newGame();
-  List<ChessPiece> get pieces => coordinator.pieces;
-  late List<ChessPiece> data;
+  late List<ChessPiece> pieces = coordinator.pieces;
+  late denemeModel liste;
 
   PlayerColor currentTurn = PlayerColor.white;
   String levelUpPieceName = "Rook";
@@ -71,11 +72,14 @@ class _HomescreenState extends State<Homescreen> {
   DragTarget<ChessPiece> buildDragTarget(int x, int y) {
     return DragTarget<ChessPiece>(
       onAccept: (piece) async {
-        data = pieces;
-        denemeSaveTahta().saveTahta(data: data);
-        dynamic gelenveri = denemeGetTahta().getTahta(userId: 1);
+        liste.data = pieces;
+
+        denemeSaveTahta().saveTahta(playerID: 22, data: liste.data);
+        dynamic gelenveri = await denemeGetTahta().getTahta(userId: 21);
         print("gelenveri:");
-        print(gelenveri);
+        print(gelenveri.toString());
+        //pieces = gelenveri;
+
         //print(pieces);
         // print(loc.locationColor);
         // print(loc.x);
@@ -189,5 +193,6 @@ class _HomescreenState extends State<Homescreen> {
         child: child,
       );
     }
+    return null;
   }
 }

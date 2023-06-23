@@ -5,5 +5,11 @@ class denemeModel {
   List<ChessPiece> data;
   factory denemeModel.FromJson(Map<String, dynamic> json) =>
       denemeModel(data: json["data"]);
-  Map<String, dynamic> toJson() => {"data": data};
+
+  Map<String, dynamic> toJson() {
+    return {
+      "data": List<dynamic>.from(data.map((chessPiece) => chessPiece
+          .toJson())), // ChessPiece objelerini JSON'a dönüştürmek için "toJson" yöntemini kullanıyoruz
+    };
+  }
 }

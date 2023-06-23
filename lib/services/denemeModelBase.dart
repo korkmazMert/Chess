@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:chessgame1/pieces/chess_piece.dart';
-import 'package:chessgame1/services/ChessPieceModel.dart';
 import 'package:chessgame1/services/denemeModel.dart';
 import 'package:json_annotation/json_annotation.dart';
 

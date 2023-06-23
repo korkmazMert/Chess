@@ -28,17 +28,35 @@ abstract class ChessPiece {
 
   int get x => location.x;
   int get y => location.y;
+
+  static PlayerColor get currentTurn => currentTurn;
+
+  static List<ChessPiece> get others => others;
   List<Location> moves(List<ChessPiece> others, PlayerColor currentTurn);
   List<Location> captures(List<ChessPiece> others, PlayerColor currentTurn);
-
+  late List<Location> hamleler = moves(others, currentTurn);
   bool canMoveto(
           int x, int y, List<ChessPiece> others, PlayerColor currentTurn) =>
       moves(others, currentTurn).contains(Location(x, y, pieceColor));
-
+  late List<Location> capturelar = captures(others, currentTurn);
   bool canCapture(
           int x, int y, List<ChessPiece> others, PlayerColor currentTurn) =>
       captures(others, currentTurn).contains(Location(x, y, pieceColor));
 
   @override
   String toString() => "$name($x,$y)";
+  Map<String, dynamic> toJson() {
+    return {
+      "name": name,
+      "location": location
+          .toJson(), // Location objesini JSON'a dönüştürmek için "toJson" yöntemini kullanıyoruz
+      "pieceColor": pieceColor.toString(),
+      "x": x,
+      "y": y,
+      "moves": hamleler,
+      "captures": capturelar
+      // Diğer özellikleri de JSON'a dönüştürebilirsiniz
+      // Örnek olarak: "pieceColor": pieceColor.toString(),
+    };
+  }
 }
