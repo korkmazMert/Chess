@@ -6,8 +6,8 @@ import 'package:chessgame1/pieces/knight.dart';
 import 'package:chessgame1/pieces/queen.dart';
 import 'package:chessgame1/pieces/rook.dart';
 import 'package:chessgame1/services/denemeModel.dart';
-import 'package:chessgame1/services/serviceOperators.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -31,8 +31,57 @@ class _HomescreenState extends State<Homescreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Chess"),
-      ),
+          title: const Text("Chess"),
+          leading: IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text("Emin Misiniz?"),
+                  content: const Text("Şimdi çıkarsanız oyununuz silinecek."),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Homescreen(),
+                          )),
+                      child: const Text("Yeni Oyun"),
+                    ),
+                    TextButton(
+                      onPressed: () => SystemNavigator.pop(),
+                      child: const Text("Çık"),
+                    )
+                  ],
+                ),
+              );
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
+          )
+          // leading: BackButton(
+          //   onPressed: () => AlertDialog(
+          //     title: const Text("Emin Misiniz?"),
+          //     content: const Text("cikmak için evete basin."),
+          //     actions: [
+          //       TextButton(
+          //         onPressed: () => Navigator.pushReplacement(
+          //             context,
+          //             MaterialPageRoute(
+          //               builder: (context) => Homescreen(),
+          //             )),
+          //         child: const Text("Evet"),
+          //       ),
+          //       TextButton(
+          //         onPressed: () => SystemNavigator.pop(),
+          //         child: const Text("cik"),
+          //       )
+          //     ],
+          //   ),
+          // )
+          ),
       body: Column(
         children: [
           const Spacer(),
@@ -72,18 +121,6 @@ class _HomescreenState extends State<Homescreen> {
   DragTarget<ChessPiece> buildDragTarget(int x, int y) {
     return DragTarget<ChessPiece>(
       onAccept: (piece) async {
-        liste.data = pieces;
-
-        denemeSaveTahta().saveTahta(playerID: 22, data: liste.data);
-        dynamic gelenveri = await denemeGetTahta().getTahta(userId: 21);
-        print("gelenveri:");
-        print(gelenveri.toString());
-        //pieces = gelenveri;
-
-        //print(pieces);
-        // print(loc.locationColor);
-        // print(loc.x);
-        // print(loc.y);
         final capturedPiece = coordinator.pieceOfTile(x, y);
         piece.location = Location(x, y, piece.pieceColor);
         if (capturedPiece != null) {
@@ -129,8 +166,10 @@ class _HomescreenState extends State<Homescreen> {
         if (piece == null) {
           return false;
         }
-        final canMoveTo = piece.canMoveto(x, y, pieces, currentTurn);
+        final canMoveTo = piece.canMoveto(x, y, pieces, currentTurn) ||
+            piece.location != piece.location;
         final canCapture = piece.canCapture(x, y, pieces, currentTurn);
+
         // print(piece.moves(pieces, currentTurn));
         // print(piece.captures(pieces, currentTurn));
 

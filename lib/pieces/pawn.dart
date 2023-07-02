@@ -61,7 +61,7 @@ class Pawn extends ChessPiece {
 
         final pieceOnLocation =
             pieces.any((piece) => piece.location == destination);
-        if (pieceOnLocation && location != destination) {
+        if (pieceOnLocation) {
           obstructed = true;
           return null;
         }
